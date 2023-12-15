@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 200%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-image: url(bg.jpeg);
+            background-repeat: no-repeat;
+            /* background-size: 1500px; */
+            background-size:cover;
+        }
+
+        .list {
+            width: 100%;
+            max-width: 500px;
+            background-color: #f7f7f7;
+            margin: 50px auto;
+            padding: 40px 30px 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .list h2 {
+            margin-bottom: 20px;
+            text-align: center;
+            color: #333;
+        }
+
+        .list1 {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #fff;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            padding: 10px;
+        }
+
+        .list1 input {
+            flex-grow: 1;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+        }
+
+        .list1 button {
+            background: #4caf50;
+            color: #fff;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .lists {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .list2 {
+            flex-grow: 1;
+            margin-right: 10px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #fff;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        li.checked {
+            background: #e0f7fa;
+        }
+
+        li span {
+            color: #ff5722;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="list">
+            <h2>To-Do List</h2>
+            <div class="list1">
+                <input type="text" id="input" placeholder="Add your task">
+                <button onclick="AddTask()">Add task</button>
+            </div>
+            <div class="lists">
+                <div class="list2">
+                    <h3>Pending Tasks</h3>
+                    <ul id="pending-list"></ul>
+                </div>
+                <div class="list2">
+                    <h3>Completed Tasks</h3>
+                    <ul id="completed-list"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const inputBox = document.getElementById("input");
+        const pendingList = document.getElementById("pending-list");
+        const completedList = document.getElementById("completed-list");
+
+        function AddTask() {
+            if (inputBox.value === '') {
+                alert("Add some task!");
+            } else {
+                let li = document.createElement("li");
+                li.innerHTML = `
+                    <span>${inputBox.value}</span>
+                    <span onclick="completeTask(this)">✓</span>
+                    <span onclick="editTask(this)">✎</span>
+                    <span onclick="deleteTask(this)">\u00d7</span>
+                `;
+                pendingList.appendChild(li);
+            }
+            inputBox.value = "";
+        }
+
+        function completeTask(element) {
+            const task = element.parentElement;
+            task.classList.toggle("checked");
+            if (task.classList.contains("checked")) {
+                completedList.appendChild(task);
+            } else {
+                pendingList.appendChild(task);
+            }
+        }
+
+        function deleteTask(element) {
+            element.parentElement.remove();
+        }
+
+        function editTask(element) {
+            const task = element.parentElement;
+            const newText = prompt("Edit task:", task.querySelector("span:first-child").innerText);
+            if (newText !== null) {
+                task.querySelector("span:first-child").innerText = newText;
+            }
+        }
+    </script>
+</body>
+</html>
